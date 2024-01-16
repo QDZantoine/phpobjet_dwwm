@@ -1,20 +1,24 @@
 <?php
-class ClientManager extends Manager{
+class ClientManager extends Manager
+{
 
-        function getDescribe(){
-        $result=$this->getDescribeTable('client'); 
+    function getDescribe()
+    {
+        $result = $this->getDescribeTable('client');
         return $result;
-
     }
 
-    function findById($id,$type='array'){
-        $result=$this->findByIdTable('client',$id);
-        if($type!='array'){
-            $obj=new client($result);
-        return $obj;
-        }else{
+    function findById($id, $type = 'obj')
+    {
+        $result = $this->findByIdTable('client', $id);
+        if ($type == 'obj') {
+            $objet = new Client($result);
+            return $objet;
+        } else {
             return $result;
-    }}
+        }
+    }
+
 
 
     // function find($id,$type='obj'){
@@ -27,14 +31,14 @@ class ClientManager extends Manager{
     //     }
     // }
 
-    function deleteById($id){
-        $this->deleteByIdTable('client',$id);
-    }
-    
-    function findAll(){
-        $result=$this->listTable('client');
-        return $result;
+    function deleteById($id)
+    {
+        $this->deleteByIdTable('client', $id);
     }
 
-   
+    function findAll()
+    {
+        $result = $this->listTable('client');
+        return $result;
+    }
 }

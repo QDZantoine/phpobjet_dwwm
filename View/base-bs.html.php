@@ -40,10 +40,10 @@
                     class="fa fa-bars"></i></a>
             <div class="collapse navbar-collapse justify-content-between" id="nav">
                 <ul class="navbar-nav px-2">
-                    <li class="nav-item"><a href="index.php" class="nav-link text-light fw-bold text-1em"><ion-icon name="home-outline"></ion-icon>Accueil</a></li>
-                    <li class="nav-item"><a href="index.php?path=article" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetag-outline"></ion-icon>Article</a></li>
+                    <li class="nav-item"><a href="home" class="nav-link text-light fw-bold text-1em"><ion-icon name="home-outline"></ion-icon>Accueil</a></li>
+                    <li class="nav-item"><a href="article" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetag-outline"></ion-icon>Article</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetags-outline"></ion-icon>Article-Ajax</a></li>                    
-                    <li class="nav-item"><a href="index.php?path=client" class="nav-link text-light fw-bold text-1em"><ion-icon name="accessibility-outline"></ion-icon>Client</a></li>
+                    <li class="nav-item"><a href="client" class="nav-link text-light fw-bold text-1em"><ion-icon name="accessibility-outline"></ion-icon>Client</a></li>
                     <li class="nav-item dropdown"><a href="" class="nav-link text-light fw-bold dropdown-toggle text-1em"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside"><ion-icon name="bag-add-outline"></ion-icon>Commande</a>
                         <ul class="dropdown-menu">
@@ -88,7 +88,7 @@
         </nav>
         <div class="row">
 
-            <div id="aside-left" class="col-md-3 bg_gray ">
+            <div id="aside-left" class="col-md-3 bg_gray print-none ">
                 <div class="center" id="logo">
                     <img src="/Public/img/qdz_logo.svg" width="100%" alt="" class="my-4">
                 </div>
