@@ -7,6 +7,9 @@ class ClientController extends MyFct
         $action = 'list';
         extract($_GET);
         switch ($action) {
+            case 'search':
+                $this->searchClient($word);
+                break;
             case 'list':
                 $this->listerClient();
                 break;
@@ -28,6 +31,21 @@ class ClientController extends MyFct
         }
     }
     //-------------My functions----------------------------------------------------
+    function searchClient($word){
+        $cm=new ClientManager();
+        $columnLikes=['numClient','nomClient','adresseClient'];
+        $clients=$cm->search($columnLikes,$word);
+        $variables = [
+            'lignes' => $clients,
+            'nbre' => count($clients),
+        ];
+        $file = "View/client/list.html.php";
+        $myFct = new MyFct();
+        $myFct->generatePage($file, $variables);
+
+
+    }
+    
     function sauvegarderClient($data)
     {
         $cm=new ClientManager();

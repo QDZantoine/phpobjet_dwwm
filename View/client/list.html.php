@@ -1,7 +1,7 @@
 <div class="w90 auto mt-4">
     <div class="div-btn my-2">
-        <a href="client&action=insert" class="btn btn-md bg_affich">Nouveau Client</a>
-        <a href="javascript:window.print()" class="btn btn-md bg_gray">imprimmer</a>
+        <a href="client&action=insert" class="btn btn-md bg_affich ">Nouveau Client</a>
+        <a href="javascript:window.print()" class="btn btn-md bg_gray_button ">imprimmer</a>
     </div>
     <h1 class="titre center">LISTE CLIENT</h1>
     <table class="w100 fw-bold">
@@ -23,9 +23,9 @@
                     <td><?= $ligne['nomClient'] ?></td>
                     <td><?= $ligne['adresseClient'] ?></td>
                     <td class="d-flex justify-content-between">
-                        <a href="client&action=show&id=<?= $ligne['id'] ?>" class="btn btn-sm btn-success me-2">Afficher</a>
-                        <a href="client&action=update&id=<?= $ligne['id'] ?>" class="btn btn-sm btn-primary me-2">Modifier</a>
-                        <button onclick="supprimer(<?= $ligne['id'] ?>)" class="btn btn-sm btn-danger me-2">Supprimmer</button>
+                        <a href="client&action=show&id=<?= $ligne['id'] ?>" class="btn btn-sm  bg_affich  me-2">Afficher</a>
+                        <a href="client&action=update&id=<?= $ligne['id'] ?>" class="btn btn-sm  bg_modif  me-2">Modifier</a>
+                        <button onclick="supprimer(<?= $ligne['id'] ?>)" class="btn btn-sm  bg_suppr  me-2">Supprimmer</button>
                     </td>
 
                 </tr>
@@ -43,6 +43,19 @@
     </table>
 </div>
 <script>
+    function search(){
+        
+        document.location.href="client&action=search&word="+word.value;
+
+    }
+    function touche(event){
+        if(event.keyCode==13){
+            search();
+
+        }
+
+    }
+
     function supprimer(id){
         const response=confirm("Etes vous sur de vouloir supprimer ce client ?");
         if(response){

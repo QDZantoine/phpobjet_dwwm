@@ -3,6 +3,27 @@ require_once("Config/parametre.php");
 
 class Manager
 {
+    function searchTable($table,$columnLikes,$word){
+
+        $connexion=$this->connexion();
+        $condition="";
+        $values=[];
+        foreach($columnLikes as $value){
+            $condition.=($condition=="")? " $value like ? " : " or $value like ? ";
+            $values[]="%$word%";
+        }
+        $sql="select * from $table where $condition";
+        //---------Testing------
+        // $MyFct=new MyFct();
+        //  echo $sql;
+        //  $MyFct->printr($values);
+        //  die;
+        //-----------------------
+        $request=$connexion->prepare($sql);
+        $request->execute($values);
+        $result=$request->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
     function updateTable($table,$data,$id){
         $connexion=$this->connexion();

@@ -62,8 +62,8 @@
                 </ul>
                 <div action="">
                     <div class="input-group">
-                        <input onKeyDown="touche(event)"  id="mot" name="mot" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
-                        <a href="javascript:chercher()" class="btn bg-gray"><ion-icon name="search-circle-outline" class="icon-search"></ion-icon></a>
+                        <input autocomplete="off" onKeyDown="touche(event)"  id="word" name="word" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
+                        <a href="javascript:search()" class="btn bg-gray"><ion-icon name="search-circle-outline" class="icon-search"></ion-icon></a>
                         <a href="" class="mx-2 dropdown-toggle text-light" data-bs-toggle="dropdown"><ion-icon name="notifications-outline"></ion-icon><sup class="text-light">(5)</sup></a>
                         <ul class="dropdown-menu w100 bg_gray">
 
