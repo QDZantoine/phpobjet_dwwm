@@ -2,6 +2,14 @@
 class ClientManager extends Manager
 {
 
+    function update($data,$id){
+        $this->updateTable('client',$data,$id);
+    }
+
+    function insert($data){
+        $this->insertTable('client', $data);
+    }
+
     function getDescribe()
     {
         $result = $this->getDescribeTable('client');

@@ -1,5 +1,14 @@
 <?php
 class ArticleManager extends Manager{
+    function update($data,$id){
+        $this->updateTable('article',$data,$id);
+    }
+
+
+    function insert($data){
+        $this->insertTable('article', $data);
+    }
+
 
         function getDescribe(){
         $result=$this->getDescribeTable('article'); 

@@ -1,8 +1,76 @@
 <?php
 require_once("Config/parametre.php");
 
- class Manager
+class Manager
 {
+
+    function updateTable($table,$data,$id){
+        $connexion=$this->connexion();
+        $setColumn="";
+        $values=[];
+        foreach($data as $key=>$value){
+            if($key!='id'){
+                $setColumn.=($setColumn=="")?"$key=?":",$key=?";
+                /*--
+                if($setColumn==""){
+                    $setColumn.="$key=?";
+                }else{
+                    $setColumn.=",$key=?";
+                }
+                */
+                $values[]=$value;
+            }
+            
+        }
+        $sql="update $table set $setColumn where id=?";
+        $values[]=$id;
+        //---------test---
+        // $MyFct=new MyFct();
+        // echo "<h1>$sql</h1>";
+        // $MyFct->printr($values);
+        // die;
+        //------------------
+        $request=$connexion->prepare($sql);
+        $request->execute($values);
+
+    }
+
+    function insertTable($table, $data)
+    {
+        //-----init the variables-----
+        $connexion = $this->connexion();
+        $column = "";
+        $pi = "";
+        $values = [];
+        //-------generate the sql request-----
+        foreach ($data as $key => $value) {
+            if ($key != 'id') {
+                if ($column == "") {
+                    $column .= $key;
+                    $pi .= "?";
+                } else {
+                    $column .= ",$key";
+                    $pi .= ",?";
+                }
+                $values[] = $value;
+            }
+        }
+
+
+
+
+        $sql = "insert into $table ($column) values ($pi)";
+        //------test------------------
+        // $MyFct = new MyFct();
+        // echo $sql;
+        // $MyFct->printr($values);
+        // die;
+        //-----------------------------
+
+        $request = $connexion->prepare($sql);
+        $request->execute($values);
+    }
+
 
     function getDescribeTable($table)
     {

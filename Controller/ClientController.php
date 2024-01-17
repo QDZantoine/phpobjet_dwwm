@@ -35,13 +35,15 @@ class ClientController extends MyFct
         extract($data);
         $id=(int) $id;//transform $id into integer  value
         if($id!==0){ //case modification
-            $sql="update client set numClient=?,nomClient=?,adresseClient=? where id=?";
-            $requete=$connexion->prepare($sql);
-            $requete->execute([$numClient,$nomClient,$adresseClient,$id]);
+            // $sql="update client set numClient=?,nomClient=?,adresseClient=? where id=?";
+            // $requete=$connexion->prepare($sql);
+            // $requete->execute([$numClient,$nomClient,$adresseClient,$id]);
+            $cm->update($data,$id);
         }else{   //case insertion
-            $sql="insert into client (numClient,nomClient,adresseClient) values (?,?,?)";
-            $requete=$connexion->prepare($sql);
-            $requete->execute([$numClient,$nomClient,$adresseClient]);
+            // $sql="insert into client (numClient,nomClient,adresseClient) values (?,?,?)";
+            // $requete=$connexion->prepare($sql);
+            // $requete->execute([$numClient,$nomClient,$adresseClient]);
+            $cm->insert($data);
         }
         //redirection to the page list client
         header('Location:client');
