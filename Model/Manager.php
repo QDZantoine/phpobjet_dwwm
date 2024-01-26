@@ -3,35 +3,106 @@ require_once("Config/parametre.php");
 
 class Manager
 {
-    function searchTable($table,$columnLikes,$word){
-
-        $connexion=$this->connexion();
-        $condition="";
-        $values=[];
-        foreach($columnLikes as $value){
-            $condition.=($condition=="")? " $value like ? " : " or $value like ? ";
-            $values[]="%$word%";
+    function findAllByConditionTable($table, $dataCondition = [], $order = '', $type = 'obj')
+    {  //  $order assure le classement du resultats
+        $connexion = $this->connexion();  // recuoeration de la connexion à la bdd
+        $condition = ''; // On initialise la variable $condition à vide
+        $values = []; // la variable $values va etre injectée dans la methode execute 
+        foreach ($dataCondition as $key => $value) { // A chaque element du tableau $dataCondition on le recupere dans la variable $valus Et $key correspond à l'indice de l'element
+            if (!$condition) {  // Le '!' dit que $contion est vide  On aurait pu ecrire if($condition=='')
+                $condition .= " $key=? ";
+            } else {
+                $condition .= " and $key=? ";
+            }
+            // $condition.=(!$condition)?" $key=? " : " and $key= ? ";  
+            // Syntaxe et ternaire =   (condition à verifier)? "expression correspondante à la condition si vrai" : " exepression correspondante à la condition si fausse"
+            $values[] = $value; // Pousser dans la variable tableau $values le conntenu de la variable $value
         }
-        $sql="select * from $table where $condition";
+        $condition = (!$condition) ? "true" : $condition;
+        $sql = "select * from $table where $condition $order";
+        // echo $sql;
+        // printr($values);die;
+        $requete = $connexion->prepare($sql);
+        $requete->execute($values);
+        $resultats = $requete->fetchAll(PDO::FETCH_ASSOC);
+        if ($type == 'obj') {
+            $class = ucfirst($table);  //  Transformer le nom de la table à la variable $table en majuscule la première lettre. Exemple: avec 'article' on a  'Article'
+            $objs = []; // une variable qui va recevoir toutes les lignes de la variables $resultats
+            foreach ($resultats as $value) {
+                $obj = new $class($value);  // instanciation de la classe $clas sur le tableau $value
+                $objs[] = $obj; //   Pousser $obj dans $objs
+            }
+            return $objs;
+        } else {
+            return $resultats;
+        }
+    }
+    // La fonction findOneByConditionTable nous permet faire une recherche suivant le contenu de $dataCondition avec l'operateur 'and'
+    function findOneByConditionTable($table, $dataCondition = [], $type = 'obj')
+    {
+        $connexion = $this->connexion();  // recuoeration de la connexion à la bdd
+        $condition = ''; // On initialise la variable $condition à vide
+        $values = []; // la variable $values va etre injectée dans la methode execute 
+        foreach ($dataCondition as $key => $value) { // A chaque element du tableau $dataCondition on le recupere dans la variable $valus Et $key correspond à l'indice de l'element
+            if (!$condition) {  // Le '!' dit que $contion est vide  On aurait pu ecrire if($condition=='')
+                $condition .= " $key=? ";
+            } else {
+                $condition .= " and $key=? ";
+            }
+
+            // $condition.=(!$condition)?" $key=? " : " and $key= ? ";  
+            // Syntaxe et ternaire =   (condition à verifier)? "expression correspondante à la condition si vrai" : " exepression correspondante à la condition si fausse"
+            $values[] = $value; // Pousser dans la variable tableau $values le conntenu de la variable $value
+        }
+        $condition = (!$condition) ? "true" : $condition;
+        $sql = "select * from $table where $condition";
+        // echo $sql;
+        // printr($values);die;
+        $requete = $connexion->prepare($sql);
+        $requete->execute($values);
+        $resultat = $requete->fetch();
+        if ($type == 'obj') {
+            $class = ucfirst($table);
+            $obj = new  $class($resultat);
+            return $obj;
+        } else {
+            return $resultat;
+        }
+    }
+
+
+
+    function searchTable($table, $columnLikes, $word)
+    {
+
+        $connexion = $this->connexion();
+        $condition = "";
+        $values = [];
+        foreach ($columnLikes as $value) {
+            $condition .= ($condition == "") ? " $value like ? " : " or $value like ? ";
+            $values[] = "%$word%";
+        }
+        $sql = "select * from $table where $condition";
         //---------Testing------
         // $MyFct=new MyFct();
         //  echo $sql;
         //  $MyFct->printr($values);
         //  die;
         //-----------------------
-        $request=$connexion->prepare($sql);
+        $request = $connexion->prepare($sql);
         $request->execute($values);
-        $result=$request->fetchAll(PDO::FETCH_ASSOC);
+        $result = $request->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
-    function updateTable($table,$data,$id){
-        $connexion=$this->connexion();
-        $setColumn="";
-        $values=[];
-        foreach($data as $key=>$value){
-            if($key!='id'){
-                $setColumn.=($setColumn=="")?"$key=?":",$key=?";
+    function updateTable($table, $data, $id)
+    {
+        $connexion = $this->connexion();
+        $setColumn = "";
+        $values = [];
+        foreach ($data as $key => $value) {
+            if ($key != 'id') {
+                $setColumn .= ($setColumn == "") ? "$key=?" : ",$key=?";
                 /*--
                 if($setColumn==""){
                     $setColumn.="$key=?";
@@ -39,21 +110,19 @@ class Manager
                     $setColumn.=",$key=?";
                 }
                 */
-                $values[]=$value;
+                $values[] = $value;
             }
-            
         }
-        $sql="update $table set $setColumn where id=?";
-        $values[]=$id;
+        $sql = "update $table set $setColumn where id=?";
+        $values[] = $id;
         //---------test---
         // $MyFct=new MyFct();
         // echo "<h1>$sql</h1>";
         // $MyFct->printr($values);
         // die;
         //------------------
-        $request=$connexion->prepare($sql);
+        $request = $connexion->prepare($sql);
         $request->execute($values);
-
     }
 
     function insertTable($table, $data)

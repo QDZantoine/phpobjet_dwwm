@@ -1,29 +1,29 @@
 <?php
-class ClientManager extends Manager
+class UserManager extends Manager
 {
     function search($columnLikes,$word){
-        return $this->searchTable('client',$columnLikes,$word);
+        return $this->searchTable('user',$columnLikes,$word);
     }
 
     function update($data,$id){
-        $this->updateTable('client',$data,$id);
+        $this->updateTable('user',$data,$id);
     }
 
     function insert($data){
-        $this->insertTable('client', $data);
+        $this->insertTable('user', $data);
     }
 
     function getDescribe()
     {
-        $result = $this->getDescribeTable('client');
+        $result = $this->getDescribeTable('user');
         return $result;
     }
 
     function findById($id, $type = 'obj')
     {
-        $result = $this->findByIdTable('client', $id);
+        $result = $this->findByIdTable('user', $id);
         if ($type == 'obj') {
-            $objet = new Client($result);
+            $objet = new User($result);
             return $objet;
         } else {
             return $result;
@@ -33,9 +33,9 @@ class ClientManager extends Manager
 
 
     // function find($id,$type='obj'){
-    //     $resultat=$this->findByIDTable('client',$id);
+    //     $resultat=$this->findByIDTable('user',$id);
     //     if($type=='obj'){
-    //         $obj=new client($resultat);
+    //         $obj=new user($resultat);
     //         return $obj;
     //     }else{
     //         return $resultat;
@@ -44,12 +44,15 @@ class ClientManager extends Manager
 
     function deleteById($id)
     {
-        $this->deleteByIdTable('client', $id);
+        $this->deleteByIdTable('user', $id);
     }
 
     function findAll()
     {
-        $result = $this->listTable('client');
+        $result = $this->listTable('user');
         return $result;
+    }
+    public function statisticVente(){
+        
     }
 }

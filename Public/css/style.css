@@ -162,8 +162,10 @@
 #accueil {
   width: 100%;
   height: 100vh;
-  background-image: url("../img/fond1.jpeg");
   background-size: cover;
+}
+.background_logo{
+ 
 }
 .banner {
   max-height: 25vh !important;
@@ -172,6 +174,7 @@
 .line-input {
   line-height: 50px;
 }
+
 .lab30 {
   float: left;
   width: 30%;
@@ -278,6 +281,7 @@
   }
   #section {
     width: 100% !important;
+    
   }
   .bouton {
     display: none !important;
@@ -350,6 +354,7 @@
 }
 .bg_affich:hover {
   background-color: #3f6465;
+  
  }
 .bg_suppr{
     background-color: rgb(109, 108, 108);
@@ -390,6 +395,7 @@
   text-align: center;
   border-bottom: 3px solid rgb(84, 84, 84);
   color: rgb(253, 253, 255);
+  border-radius: 10px!important;
 }
 
 .w5 {
@@ -454,10 +460,20 @@ li {
   border-radius: 10px;
 }
 #section {
-  width: 80%;
+  width: 100%;
   background-color: lightblue;
   height: 95vh;
   overflow: auto;
+  
+}
+.backgroun_acceuil{
+  background-image: url('Public/img/.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover; /* Assure que l'image couvre la zone sans perdre ses proportions */
+  width: 100vw;
+  height: 100vh;
 }
 #footer {
   width: 100%;

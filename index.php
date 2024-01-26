@@ -1,6 +1,12 @@
 <?php
- error_reporting(E_ALL & ~E_DEPRECATED); 
- ini_set("display_errors", 1); 
+ //error_reporting(E_ALL & ~E_DEPRECATED); 
+ //ini_set("display_errors", 1); 
+ session_start();
+ if(!$_SESSION){   //    la variable $_SESSION est encore vide ====  $_SESSION=[];
+     $_SESSION['username']='user';
+     $_SESSION['roles']=json_encode(['ROLE_USER']);
+     $_SESSION['bg_navbar']='bg_red';
+ }
 
 //use it for debugging
 require_once("Service/extra.php");

@@ -12,57 +12,69 @@
     <link rel="stylesheet" href="Public/css/style.css">
     <title>DWWM PROJECT</title>
     <style>
-            #aside-left,
-            #section-bs {
-                min-height: 70vh;
-                margin-top: 10vh;
+        #aside-left,
+        #section-bs {
+            min-height: 70vh;
+            margin-top: 10vh;
+        }
+
+        #section-bs {
+            overflow: auto;
+            position: relative;
+        }
+
+        @media screen and (max-width:750px) {
+            #aside-left {
+                width: 100%;
             }
 
-            #section-bs {
-                overflow: auto;
-                position:relative;
-            }
-            @media screen  and (max-width:750px){
-                #aside-left{
-                    width:100%;
-                }
-                
-            }
-
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-md bg_gray text-light fixed-top">
+        <nav class="navbar navbar-expand-md bg_gray <?=$_SESSION['bg_navbar']?> text-light fixed-top">
             <a href="" class="btn"><ion-icon name="laptop-outline"></ion-icon></a>
-            <a href="#nav" class="btn bg-light navbar-toggler mx-2" data-bs-toggle="collapse"><i
-                    class="fa fa-bars"></i></a>
+            <a href="#nav" class="btn bg-light navbar-toggler mx-2" data-bs-toggle="collapse"><i class="fa fa-bars"></i></a>
             <div class="collapse navbar-collapse justify-content-between" id="nav">
                 <ul class="navbar-nav px-2">
                     <li class="nav-item"><a href="home" class="nav-link text-light fw-bold text-1em"><ion-icon name="home-outline"></ion-icon>Accueil</a></li>
-                    <li class="nav-item"><a href="article" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetag-outline"></ion-icon>Article</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetags-outline"></ion-icon>Article-Ajax</a></li>                    
-                    <li class="nav-item"><a href="client" class="nav-link text-light fw-bold text-1em"><ion-icon name="accessibility-outline"></ion-icon>Client</a></li>
-                    <li class="nav-item dropdown"><a href="" class="nav-link text-light fw-bold dropdown-toggle text-1em"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside"><ion-icon name="bag-add-outline"></ion-icon>Commande</a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item"><a href="" class="nav-link text-1em">Devis</a></li>
-                            <li class="nav-item"><a href="" class="nav-link text-1em">Facture</a></li>
-                            <li class="nav-item dropend"><a href="" class="nav-link text-1em dropdown-toggle"
-                                    data-bs-toggle="dropdown">Livraison</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a href="" class="nav-link text-1em">Domicile</a></li>
-                                    <li class="nav-item"><a href="" class="nav-link text-1em">Magasin</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a href="" class="nav-link text-light fw-bold"><ion-icon name="construct-outline"></ion-icon>Parametre</a></li>
+                    <?php if (MyFct::isGranted('ROLE_ADMIN')) : ?>
+                        <li class="nav-item"><a href="article" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetag-outline"></ion-icon>Article</a></li>
+                        <li class="nav-item"><a href="article-ajax.php" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetags-outline"></ion-icon>Article-Ajax</a></li>
+                        <li class="nav-item"><a href="client" class="nav-link text-light fw-bold text-1em"><ion-icon name="accessibility-outline"></ion-icon>Client</a></li>
+                    <?php endif; ?>
+                    <?php if (MyFct::isGranted('ROLE_CAISSE')) : ?>
+                        <li class="nav-item dropdown"><a href="" class="nav-link text-light fw-bold dropdown-toggle text-1em" data-bs-toggle="dropdown" data-bs-auto-close="outside"><ion-icon name="bag-add-outline"></ion-icon>Commande</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="" class="nav-link text-1em">Devis</a></li>
+                                <li class="nav-item"><a href="" class="nav-link text-1em">Facture</a></li>
+                                <li class="nav-item dropend"><a href="" class="nav-link text-1em dropdown-toggle" data-bs-toggle="dropdown">Livraison</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="" class="nav-link text-1em">Domicile</a></li>
+                                        <li class="nav-item"><a href="" class="nav-link text-1em">Magasin</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                    <!-- <li class="nav-item"><a href="user" class="nav-link text-light fw-bold"><ion-icon name="people-circle-outline"></ion-icon>Users</a></li>
+                    <li class="nav-item"><a href="" class="nav-link text-light fw-bold"><ion-icon name="construct-outline"></ion-icon>Parametre</a></li> -->
+                    <?php if (MyFct::isGranted('ROLE_ADMIN')) : ?>
+                        <li class="nav-item dropdown"><a href="" class="nav-link text-primary text-light fw-bold dropdown-toggle" data-bs-toggle="dropdown">Parametre</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="user" class="nav-link">User</a></li>
+                                <li class="nav-item"><a href="role" class="nav-link">Role</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                    <!-- <li class="nav-item"><a href="user&action=login" class="nav-link text-light fw-bold">Se connecter</a></li> -->
+                    <!-- <li class="nav-item"><a href="user&action=logout" class="nav-link text-light fw-bold">Se deconnecter</a></li> -->
                 </ul>
                 <div action="">
                     <div class="input-group">
-                        <input autocomplete="off" onKeyDown="touche(event)"  id="word" name="word" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
+                        <input autocomplete="off" onKeyDown="touche(event)" id="word" name="word" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
                         <a href="javascript:search()" class="btn bg-gray"><ion-icon name="search-circle-outline" class="icon-search"></ion-icon></a>
                         <a href="" class="mx-2 dropdown-toggle text-light" data-bs-toggle="dropdown"><ion-icon name="notifications-outline"></ion-icon><sup class="text-light">(5)</sup></a>
                         <ul class="dropdown-menu w100 bg_gray">
@@ -74,16 +86,23 @@
                             <li class="nav-item p-2 w-100">Message - 05</li>
                             <li class="nav-item p-2 w-100">Message - 06</li>
                         </ul>
-                        <a href="" class=" dropdown-toggle text-light text-1em fw-bold" data-bs-toggle="dropdown">
-                        <ion-icon name="person-circle-outline"></ion-icon>QDZ</a>
-                        <ul class="dropdown-menu w100 bg_blue">
-                            <li class="nav-item w100 p-2"><a href="" class="nav-link">Compte</a></li>
-                            <li class="nav-item w100 p-2"><a href="" class="nav-link">Changement mot de passe</a></li>
-                            <li class="nav-item w100 p-2"><a href="" class="nav-link">Deconnexion</a></li>
-                        </ul>
+                        <?php if ($_SESSION['username'] != 'user') : ?>
+                            <a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown"><i class="fa fa-user fa-2x"></i><?= $_SESSION['username'] ?></a>
+                            <ul class="dropdown-menu w100 bg_blue">
+                                <li class="nav-item w100 p-2"><a href="" class="nav-link">Compte</a></li>
+                                <li class="nav-item w100 p-2"><a href="" class="nav-link">Changement mot de passe</a></li>
+                                <li class="nav-item w100 p-2"><a href="" class="nav-link">Deconnexion</a></li>
+                            </ul>
+                        <?php else : ?>
+                            <a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown"><i class="fa fa-user fa-2x"></i>Visiteur</a>
+                            <ul class="dropdown-menu w100 bg_blue">
+                                <li class="nav-item w100 p-2"><a href="user&action=login" class="nav-link">Se connecter</a></li>
+                                <li class="nav-item w100 p-2"><a href="" class="nav-link">S'inscrire</a></li>
+                            </ul>
+                        <?php endif; ?>
                     </div>
 
-        </div>
+                </div>
             </div>
         </nav>
         <div class="row">
@@ -107,7 +126,7 @@
                 </ul>
             </div>
             <div id="section-bs" class="col-md-9 bg_blue">
-                <?=$content?>
+                <?= $content ?>
             </div>
         </div>
         <footer class="my-2">
