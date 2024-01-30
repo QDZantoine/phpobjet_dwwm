@@ -7,11 +7,13 @@
     <table class="w100 fw-bold">
         <thead id="thead_user">
             <tr class="bg_gray">
-                <th class="w5 center hidden">ID</th>
-                <th class="w15 text-start">Username</th>
-                <th class="w20 text-start">Date Creation</th>
-                <th class="w20 text-start">Roles</th>
-                <th class="w20 center">Actions</th>
+                <td class="w5 center hidden">ID</td>
+                <td class="w20 text-start">Photo</td>
+                <td class="w10 text-start">Download</td>
+                <td class="w15 text-start">Username</td>
+                <td class="w20 text-start">Date Creation</td>
+                <td class="w20 text-start">Roles</td>
+                <td class="w20 center">Actions</td>
             </tr>
 
         </thead>
@@ -19,6 +21,8 @@
             <?php foreach ($lignes as $line) : ?>
                 <tr>
                     <td class="hidden"><?= $line['id'] ?></td>
+                    <td><img src="Public/upload/<?= $line['photo'] ?>" alt="" width="10%" class="img-fluid zoom" ></td>
+                    <td><a href="Public/upload/<?= $line['photo'] ?>" download>Télécharger</a></td>
                     <td><?= $line['username'] ?></td>
                     <td><?= $line['creationDate'] ?></td>
                     <td class="py-2" ><?= $line['roles'] ?></td>

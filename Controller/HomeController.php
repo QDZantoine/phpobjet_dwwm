@@ -4,7 +4,7 @@ class HomeController
 {
     public function __construct()
     {
-        $file = "View/accueil/accueil.html.php";
+        $file = "View/portfolio/portfolio.html.php";
         $myFct = new MyFct();
         $myFct->generatePage($file);
     }

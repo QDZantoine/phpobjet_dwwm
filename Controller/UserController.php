@@ -9,31 +9,32 @@ class UserController extends MyFct
         switch ($action) {
 
             case 'list':
-                if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
+                // if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
                     $this->listerUser();
                     break;
             case 'insert':
                 $this->insererUser();
                 break;
             case 'update':
-                if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
+                // if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
                     $this->modifierUser($id);
                     break;
             case 'show':
-                if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
+                // if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
                     $this->afficherUser($id);
                     break;
             case 'delete':
-                if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
+                // if($this->notGranted('ROLE_ADMIN')) $this->throwMessage("Vous n'avez pas <br> le droit d'utiliser cette action!"); 
                     $this->deleteUser($id);
                     break;
             case 'save':
-                $this->sauvegarderUser($_POST);
+                $this->sauvegarderUser($_POST,$_FILES);
                 break;
             case 'search':
                 $this->searchUser($word);
                 break;
                 case 'login':
+
                     if($_POST){  // if($_POST!=[])  ou if(!empty($_POST))
                         $this->valider($_POST);
                     }
@@ -54,14 +55,25 @@ class UserController extends MyFct
     function valider($data){
         $um=new UserManager();
         extract($data);
-        $connexion=$um->connexion();
-        $sql="select * from user where (username=? or email=?)  and password=?";
-        $requete=$connexion->prepare($sql);
-        $requete->execute([$username,$username,sha1($password)]);  // le premier $username est pour username=? et le 2ème pour email=?
-        $user =$requete->fetch(PDO::FETCH_ASSOC);
+        // $connexion=$um->connexion();
+        // $sql="select * from user where (username=? or email=?)  and password=?";
+        // $requete=$connexion->prepare($sql);
+        // $requete->execute([$username,$username,$this->crypter($password)]);  // le premier $username est pour username=? et le 2ème pour email=?
+        // $user =$requete->fetch(PDO::FETCH_ASSOC);
+        $dataCondition=['username'=>$username,'password'=>$this->crypter($password)];
+        // $user=$um->findOneByCondition($dataCondition,'array');
+        $user=$um->findOneByCondition($dataCondition);
+        if(!$user->getUsername()){  // La recherche sur username s'est averée fausse alors on tente la recherche sur email
+            $dataCondition=['email'=>$username,'password'=>$this->crypter($password)];
+            $user=$um->findOneByCondition($dataCondition); 
+               
+        }
+      
+
+
         if($user){
-            $_SESSION['username']=$user['username'];
-            $_SESSION['roles']=$user['roles'];
+            $_SESSION['username']=$user->getUsername(); //$user['username'];
+            $_SESSION['roles']=$user->getRoles(); //$user['roles'];
             $_SESSION['bg_navbar']="bg_green";
             //---Redirection vers l'accueil
 
@@ -120,12 +132,30 @@ class UserController extends MyFct
     }
 
 
-    function sauvegarderUser($data)
+    function sauvegarderUser($data,$files)
     {
+        if(($files['photo']['name'])){
+            $file_photo=$files['photo']; // $_FILES['photo']
+            $name=$file_photo['name']; // catch the name of the file with the extension
+            $source=$file_photo['tmp_name']; //catch the temporary path of the file
+            $destination="Public/upload/$name"; // the path where goes the file
+            move_uploaded_file($source,$destination); // move the temporary file to the directory
+            $data['photo']=$name;
+
+
+        }else{
+            $file_photo=[
+                'name' => '',
+                'temp_name' => '',
+            ];
+            unset($data['name']);// delete the element with the index 'name' on $data
+        }
+
+        $file_photo = $files['photo']; // $_FILES['photo'];
         $um = new UserManager();
         $connexion = $um->connexion();
         $data['roles'] = json_encode($data['roles']); //transform the content of $data['roles'] in json
-        $data['password]'] = sha1($data['password']); // crypte the password
+        $data['password']=$this->crypter($data['password']); // crypte the password
         extract($data);
         $id = (int) $id; //transform $id into integer  value
         if ($id !== 0) { //case modification
@@ -140,36 +170,14 @@ class UserController extends MyFct
 
 
     function modifierUser($id)
-    {   //?---------------User ------------
-        $um = new UserManager();  //instance the class UserManager
-        $user = $um->findById($id); //get the user that match with the id $id. whith UserManager we get an object
-        $user_roles = json_decode($user->getRoles());
-        //?---------Role-------------------
-        $rm = new RoleManager();
-        $myRoles = $rm->findAll();
-        $roles = [];
-        foreach ($myRoles as $role) {
-
-            $libelle = $role['libelle'];
-            if (in_array($libelle, $user_roles)) {
-                $selected = "selected";
-            } else {
-                $selected = "";
-            }
-            $roles[] = ['libelle' => $libelle, 'selected' => $selected];
-        }
-        //!---------prepare parameters-----
-        $variables = [
-
-            'id' => $user->getId(),
-            'username' => $user->getUsername(),
-            'password' => '',
-            'email' => $user->getEmail(),
-            'roles' => $roles,
-            'disabled' => '',
-        ];
-        $file = "View/user/formUser.html.php";
-        $this->generatePage($file, $variables);
+    {    $um = new UserManager();  //  Instancier la clasee UserManager
+        $user = $um->findById($id);  // Recuperer user corespondant à l'id $id. D'après UserManager on a ici un objet
+        $user_roles = $user->getRoles(); // Recupartion de roles (json) dans user
+        $user_roles = json_decode($user_roles); //  transformation de $user_roles qui est encore JSON en tableau php
+        $user->setRoles($user_roles);   // mettre à jour le roles dans l'objet user en tableau php
+        $disabled = "";
+        //----Role----------------
+        $this->generateFormUser($user, $disabled);
     }
 
 
@@ -188,6 +196,12 @@ class UserController extends MyFct
 
         function generateFormUser($user, $disabled)
         {
+
+            $photo=$user->getPhoto();
+            if(!$photo){
+                $photo="photo.png";
+            }
+
             $user_roles = $user->getRoles();
             //MyFct::printr($user_roles);die;
             $rm = new RoleManager();
@@ -213,6 +227,7 @@ class UserController extends MyFct
                 'email' => $user->getEmail(),
                 'roles' => $roles,
                 'disabled' => $disabled,
+                'photo' => $photo,
             ];
             //----Ouverture de la page
             $file = "View/user/formUser.html.php";
@@ -250,6 +265,7 @@ class UserController extends MyFct
                     'username' => $user->getUsername(),
                     'creationDate' => $dateCreation,
                     'roles' => $user_roles,
+                    'photo' => $user->getPhoto(),
                 ];
             }
             $variables = [

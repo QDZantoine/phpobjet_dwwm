@@ -97,6 +97,7 @@ class Manager
 
     function updateTable($table, $data, $id)
     {
+       
         $connexion = $this->connexion();
         $setColumn = "";
         $values = [];
@@ -118,8 +119,8 @@ class Manager
         //---------test---
         // $MyFct=new MyFct();
         // echo "<h1>$sql</h1>";
-        // $MyFct->printr($values);
-        // die;
+        //  $MyFct->printr($values);
+        //  die;
         //------------------
         $request = $connexion->prepare($sql);
         $request->execute($values);

@@ -11,30 +11,11 @@
     <link rel="icon" href="/Public/img/qdz_logo.svg">
     <link rel="stylesheet" href="Public/css/style.css">
     <title>DWWM PROJECT</title>
-    <style>
-        #aside-left,
-        #section-bs {
-            min-height: 70vh;
-            margin-top: 10vh;
-        }
-
-        #section-bs {
-            overflow: auto;
-            position: relative;
-        }
-
-        @media screen and (max-width:750px) {
-            #aside-left {
-                width: 100%;
-            }
-
-        }
-    </style>
 </head>
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-md bg_gray <?=$_SESSION['bg_navbar']?> text-light fixed-top">
+        <nav class="navbar navbar-expand-md bg_gray <?= $_SESSION['bg_navbar'] ?> text-light fixed-top">
             <a href="" class="btn"><ion-icon name="laptop-outline"></ion-icon></a>
             <a href="#nav" class="btn bg-light navbar-toggler mx-2" data-bs-toggle="collapse"><i class="fa fa-bars"></i></a>
             <div class="collapse navbar-collapse justify-content-between" id="nav">
@@ -45,7 +26,7 @@
                         <li class="nav-item"><a href="article-ajax.php" class="nav-link text-light fw-bold text-1em"><ion-icon name="pricetags-outline"></ion-icon>Article-Ajax</a></li>
                         <li class="nav-item"><a href="client" class="nav-link text-light fw-bold text-1em"><ion-icon name="accessibility-outline"></ion-icon>Client</a></li>
                     <?php endif; ?>
-                    <?php if (MyFct::isGranted('ROLE_CAISSE')) : ?>
+                    <?php if (MyFct::isGranted('ROLE_ADMIN')) : ?>
                         <li class="nav-item dropdown"><a href="" class="nav-link text-light fw-bold dropdown-toggle text-1em" data-bs-toggle="dropdown" data-bs-auto-close="outside"><ion-icon name="bag-add-outline"></ion-icon>Commande</a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a href="" class="nav-link text-1em">Devis</a></li>
@@ -173,6 +154,7 @@
     </div>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="Public/js/myScript.js"></script>
 </body>
 
 </html>

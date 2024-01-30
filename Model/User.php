@@ -9,7 +9,8 @@ class User extends UserManager{
     private $modificationDate ;
     private $lastConnexion;    
     private $modifiedDate;     
-    private $roles; 
+    private $roles;
+    private $photo; 
     function __construct($data = []){
         if ($data){
             foreach ($data as $key=>$value){
@@ -198,6 +199,26 @@ class User extends UserManager{
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of photo
+     */ 
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Set the value of photo
+     *
+     * @return  self
+     */ 
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
 
         return $this;
     }

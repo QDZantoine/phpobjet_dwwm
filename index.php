@@ -1,7 +1,15 @@
 <?php
- //error_reporting(E_ALL & ~E_DEPRECATED); 
- //ini_set("display_errors", 1); 
  session_start();
+//----- debugging see errors------------------
+
+ error_reporting(E_ALL & ~E_DEPRECATED); 
+ ini_set("display_errors", 1); 
+
+//----see the max size file_uploading-------------------
+
+//  $max=ini_get("upload_max_filesize");
+//  echo $max; die;
+
  if(!$_SESSION){   //    la variable $_SESSION est encore vide ====  $_SESSION=[];
      $_SESSION['username']='user';
      $_SESSION['roles']=json_encode(['ROLE_USER']);

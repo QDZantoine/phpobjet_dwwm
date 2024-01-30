@@ -10,7 +10,7 @@
             <input type="password" id="password" name="password" value="" class="form-control w50">
         </div>
         <div class="div-btn my-4">
-            <a href="accueil" class="btn btn-md btn-primary">Quitter</a>
+            <a href="home" class="btn btn-md btn-primary">Quitter</a>
             <input type="submit"   class="btn btn-md btn-primary" value="Valider">
         </div>
     </form>
